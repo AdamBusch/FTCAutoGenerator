@@ -69,7 +69,7 @@ public class Point {
         this.y = y;
     }
 
-    public boolean isIsBlueAlliance() {
+    public boolean isBlueAlliance() {
         return isBlueAlliance;
     }
 
