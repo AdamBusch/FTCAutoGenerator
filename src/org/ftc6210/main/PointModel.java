@@ -43,6 +43,10 @@ public class PointModel {
         return p;
     }
     
+    public Point getPoint(int index) {
+        return index >= 0 ? index < points.size() ? points.get(index) : null : null;
+    }
+    
     public boolean removePoint(Point p) {
         return points.remove(p);
     }

@@ -5,17 +5,48 @@
  */
 package org.ftc6210.main;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Timer;
+
 /**
  *
  * @author Busch_902818
  */
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame implements ActionListener{
 
     /**
      * Creates new form MainWindow
      */
-    public MainWindow() {
+    
+    private PointModel redPoints;
+    private PointModel bluePoints;
+    private BufferedImage fieldImage;
+    
+    public MainWindow() throws IOException {
         initComponents();
+        
+        redPoints = new PointModel(false);
+        bluePoints = new PointModel(true);
+       
+        fieldImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/field.png"));
+        
+        //  Update 30 times a second
+        Timer timer = new Timer(1000/60, this);
+        timer.start();
     }
 
     /**
@@ -28,7 +59,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenu1 = new javax.swing.JMenu();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        mainTabs_jTabbedPane = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         imageView_jPanel = new javax.swing.JPanel();
         currentPointName_jTextField = new javax.swing.JTextField();
@@ -56,8 +87,12 @@ public class MainWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        imageView_jPanel.setBackground(new java.awt.Color(255, 0, 0));
         imageView_jPanel.setPreferredSize(new java.awt.Dimension(360, 360));
+        imageView_jPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                imageView_jPanelMouseReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout imageView_jPanelLayout = new javax.swing.GroupLayout(imageView_jPanel);
         imageView_jPanel.setLayout(imageView_jPanelLayout);
@@ -67,7 +102,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         imageView_jPanelLayout.setVerticalGroup(
             imageView_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 360, Short.MAX_VALUE)
         );
 
         currentPointName_jTextField.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
@@ -130,15 +165,17 @@ public class MainWindow extends javax.swing.JFrame {
                             .addComponent(speed_jLabel))
                         .addGap(18, 18, 18)
                         .addComponent(customCode_jButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(notes_jLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(imageView_jPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 372, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(imageView_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 12, Short.MAX_VALUE)))
                 .addGap(15, 15, 15))
         );
 
-        jTabbedPane1.addTab("Draw", jPanel1);
+        mainTabs_jTabbedPane.addTab("Draw", jPanel1);
 
         redAlliance_jTextArea.setColumns(20);
         redAlliance_jTextArea.setRows(5);
@@ -174,7 +211,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Red Alliance", jPanel3);
+        mainTabs_jTabbedPane.addTab("Red Alliance", jPanel3);
 
         blueAlliance_jTextArea.setColumns(20);
         blueAlliance_jTextArea.setRows(5);
@@ -205,7 +242,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Blue Alliance", jPanel4);
+        mainTabs_jTabbedPane.addTab("Blue Alliance", jPanel4);
 
         jMenu2.setText("File");
         jMenuBar1.add(jMenu2);
@@ -219,12 +256,12 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(mainTabs_jTabbedPane)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1)
+                .addComponent(mainTabs_jTabbedPane)
                 .addContainerGap())
         );
 
@@ -238,6 +275,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void copyRed_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyRed_jButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_copyRed_jButtonActionPerformed
+
+    private void imageView_jPanelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageView_jPanelMouseReleased
+        redPoints.addPoint(evt.getX(), evt.getY(), "Point");
+    }//GEN-LAST:event_imageView_jPanelMouseReleased
 
     /**
      * @param args the command line arguments
@@ -269,7 +310,11 @@ public class MainWindow extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainWindow().setVisible(true);
+                try {
+                    new MainWindow().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -292,7 +337,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane mainTabs_jTabbedPane;
     private javax.swing.JLabel notes_jLabel;
     private javax.swing.JTextArea notes_jTextArea;
     private javax.swing.JList points_jList;
@@ -300,4 +345,55 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSlider speedSlider_jSlider;
     private javax.swing.JLabel speed_jLabel;
     // End of variables declaration//GEN-END:variables
+
+    
+    // Handle all of the animations from the image view
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        Graphics g = imageView_jPanel.getGraphics();
+        
+        if(mainTabs_jTabbedPane.getSelectedIndex() != 0){
+            g.dispose();
+            return;
+        }
+        
+        pointLogic();
+        draw(g);
+        
+    }
+    
+    public void pointLogic() {
+        java.awt.Point mouse = imageView_jPanel.getMousePosition();
+                 
+    }
+    
+    public void draw(Graphics g) {
+        g.drawImage(fieldImage, 0, 0, 360, 360, null);
+        
+        drawPoints(g, redPoints, Color.RED);
+        drawPoints(g, bluePoints, Color.BLUE);
+            
+        
+        g.dispose();
+    }
+    
+    public void drawPoints(Graphics g, PointModel model, Color pointColor) {
+        g.setColor(Color.BLACK);
+        for(int i = 0; i <  model.getPoints().size(); i ++){
+            Point p = model.getPoints().get(i);
+            if(i > 0) {
+                Point last = model.getPoint(i - 1);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke(2));
+                g2.drawLine(last.getX(), last.getY(), p.getX(), p.getY());
+            }
+            
+            
+        }
+        g.setColor(pointColor);
+        for(Point p : model.getPoints()) {
+            g.fillOval(p.getX() - 5, p.getY() - 5, 10, 10);
+        }
+    }
 }
