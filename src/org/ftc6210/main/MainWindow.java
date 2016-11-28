@@ -61,7 +61,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         jMenu1 = new javax.swing.JMenu();
         mainTabs_jTabbedPane = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        imageView_jPanel = new javax.swing.JPanel();
         currentPointName_jTextField = new javax.swing.JTextField();
         speedSlider_jSlider = new javax.swing.JSlider();
         speed_jLabel = new javax.swing.JLabel();
@@ -71,6 +70,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         notes_jTextArea = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         points_jList = new javax.swing.JList();
+        fieldView_jPanel = new FieldView(this);
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         redAlliance_jTextArea = new javax.swing.JTextArea();
@@ -86,24 +86,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        imageView_jPanel.setPreferredSize(new java.awt.Dimension(360, 360));
-        imageView_jPanel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                imageView_jPanelMouseReleased(evt);
-            }
-        });
-
-        javax.swing.GroupLayout imageView_jPanelLayout = new javax.swing.GroupLayout(imageView_jPanel);
-        imageView_jPanel.setLayout(imageView_jPanelLayout);
-        imageView_jPanelLayout.setHorizontalGroup(
-            imageView_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 360, Short.MAX_VALUE)
-        );
-        imageView_jPanelLayout.setVerticalGroup(
-            imageView_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 360, Short.MAX_VALUE)
-        );
 
         currentPointName_jTextField.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         currentPointName_jTextField.setText("Point");
@@ -130,14 +112,32 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         });
         jScrollPane2.setViewportView(points_jList);
 
+        fieldView_jPanel.setPreferredSize(new java.awt.Dimension(360, 360));
+        fieldView_jPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                fieldView_jPanelMouseReleased(evt);
+            }
+        });
+
+        javax.swing.GroupLayout fieldView_jPanelLayout = new javax.swing.GroupLayout(fieldView_jPanel);
+        fieldView_jPanel.setLayout(fieldView_jPanelLayout);
+        fieldView_jPanelLayout.setHorizontalGroup(
+            fieldView_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 360, Short.MAX_VALUE)
+        );
+        fieldView_jPanelLayout.setVerticalGroup(
+            fieldView_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 360, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(imageView_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(fieldView_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(customCode_jButton)
                     .addComponent(notes_jLabel)
@@ -148,7 +148,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                     .addComponent(currentPointName_jTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -168,11 +168,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(notes_jLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(imageView_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 12, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 38, Short.MAX_VALUE)
+                .addComponent(fieldView_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         mainTabs_jTabbedPane.addTab("Draw", jPanel1);
@@ -276,9 +277,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         // TODO add your handling code here:
     }//GEN-LAST:event_copyRed_jButtonActionPerformed
 
-    private void imageView_jPanelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageView_jPanelMouseReleased
-        redPoints.addPoint(evt.getX(), evt.getY(), "Point");
-    }//GEN-LAST:event_imageView_jPanelMouseReleased
+    private void fieldView_jPanelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fieldView_jPanelMouseReleased
+        java.awt.Point mouse = fieldView_jPanel.getMousePosition();
+        if(mouse != null) {
+            redPoints.addPoint(evt.getX(), evt.getY(), "Point");
+        }
+    }//GEN-LAST:event_fieldView_jPanelMouseReleased
 
     /**
      * @param args the command line arguments
@@ -325,7 +329,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JButton copyRed_jButton;
     private javax.swing.JTextField currentPointName_jTextField;
     private javax.swing.JButton customCode_jButton;
-    private javax.swing.JPanel imageView_jPanel;
+    private javax.swing.JPanel fieldView_jPanel;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
@@ -351,31 +355,33 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         
-        Graphics g = imageView_jPanel.getGraphics();
+        
+        Graphics g = fieldView_jPanel.getGraphics();
         
         if(mainTabs_jTabbedPane.getSelectedIndex() != 0){
             g.dispose();
             return;
         }
         
-        pointLogic();
-        draw(g);
+        fieldView_jPanel.paintComponents(g);
+        //draw(g);
         
     }
     
     public void pointLogic() {
-        java.awt.Point mouse = imageView_jPanel.getMousePosition();
+        java.awt.Point mouse = fieldView_jPanel.getMousePosition();
                  
     }
     
     public void draw(Graphics g) {
         g.drawImage(fieldImage, 0, 0, 360, 360, null);
+        //g.dispose();
         
         drawPoints(g, redPoints, Color.RED);
         drawPoints(g, bluePoints, Color.BLUE);
             
         
-        g.dispose();
+        //g.dispose();
     }
     
     public void drawPoints(Graphics g, PointModel model, Color pointColor) {
@@ -396,4 +402,19 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
             g.fillOval(p.getX() - 5, p.getY() - 5, 10, 10);
         }
     }
+
+    public PointModel getRedPoints() {
+        return redPoints;
+    }
+
+    public PointModel getBluePoints() {
+        return bluePoints;
+    }
+
+    public BufferedImage getFieldImage() {
+        return fieldImage;
+    }
+    
+    
+    
 }
