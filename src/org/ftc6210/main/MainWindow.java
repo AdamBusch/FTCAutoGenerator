@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,6 +36,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     private PointModel redPoints;
     private PointModel bluePoints;
     private BufferedImage fieldImage;
+    private Point selectedPoint;
     
     public MainWindow() throws IOException {
         initComponents();
@@ -114,6 +116,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
 
         fieldView_jPanel.setPreferredSize(new java.awt.Dimension(360, 360));
         fieldView_jPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fieldView_jPanelMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                fieldView_jPanelMousePressed(evt);
+            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 fieldView_jPanelMouseReleased(evt);
             }
@@ -278,11 +286,35 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     }//GEN-LAST:event_copyRed_jButtonActionPerformed
 
     private void fieldView_jPanelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fieldView_jPanelMouseReleased
-        java.awt.Point mouse = fieldView_jPanel.getMousePosition();
-        if(mouse != null) {
+        selectedPoint = null;
+        if(evt.getButton() == java.awt.event.MouseEvent.BUTTON3)
             redPoints.addPoint(evt.getX(), evt.getY(), "Point");
-        }
+        
     }//GEN-LAST:event_fieldView_jPanelMouseReleased
+
+    private void fieldView_jPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fieldView_jPanelMouseClicked
+        java.awt.Point mouse = fieldView_jPanel.getMousePosition();
+        
+        
+    }//GEN-LAST:event_fieldView_jPanelMouseClicked
+
+    private void fieldView_jPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fieldView_jPanelMousePressed
+        java.awt.Point mouse = fieldView_jPanel.getMousePosition();
+        
+        if(mouse == null)return;
+        
+        selectedPoint = null;
+        if(evt.getButton() == java.awt.event.MouseEvent.BUTTON1)
+            for(Point p : redPoints) {
+                Rectangle hitbox = new Rectangle(p.getX()-5, p.getY() -5, 10, 10);
+                if(hitbox.contains(mouse) && selectedPoint == null) {
+                    selectedPoint = p;
+                    return;
+                }
+            }
+
+        
+    }//GEN-LAST:event_fieldView_jPanelMousePressed
 
     /**
      * @param args the command line arguments
@@ -363,45 +395,26 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
             return;
         }
         
+        pointLogic();
         fieldView_jPanel.paintComponents(g);
-        //draw(g);
         
     }
     
     public void pointLogic() {
+        
         java.awt.Point mouse = fieldView_jPanel.getMousePosition();
+        
+        if(mouse != null) {
+            if(selectedPoint != null) {
+                selectedPoint.setX(mouse.x);
+                selectedPoint.setY(mouse.y);
+                
+                System.out.println(selectedPoint.getX() + " " + selectedPoint.getY());
+            }
+        }
                  
     }
     
-    public void draw(Graphics g) {
-        g.drawImage(fieldImage, 0, 0, 360, 360, null);
-        //g.dispose();
-        
-        drawPoints(g, redPoints, Color.RED);
-        drawPoints(g, bluePoints, Color.BLUE);
-            
-        
-        //g.dispose();
-    }
-    
-    public void drawPoints(Graphics g, PointModel model, Color pointColor) {
-        g.setColor(Color.BLACK);
-        for(int i = 0; i <  model.getPoints().size(); i ++){
-            Point p = model.getPoints().get(i);
-            if(i > 0) {
-                Point last = model.getPoint(i - 1);
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setStroke(new BasicStroke(2));
-                g2.drawLine(last.getX(), last.getY(), p.getX(), p.getY());
-            }
-            
-            
-        }
-        g.setColor(pointColor);
-        for(Point p : model.getPoints()) {
-            g.fillOval(p.getX() - 5, p.getY() - 5, 10, 10);
-        }
-    }
 
     public PointModel getRedPoints() {
         return redPoints;

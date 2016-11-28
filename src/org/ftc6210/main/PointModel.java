@@ -6,12 +6,13 @@
 package org.ftc6210.main;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
  * @author Busch_902818
  */
-public class PointModel {
+public class PointModel implements Iterable<Point>{
     
     private ArrayList<Point> points;
     private boolean isBlueAlliance;
@@ -57,6 +58,11 @@ public class PointModel {
 
     public void setIsBlueAlliance(boolean isBlueAlliance) {
         this.isBlueAlliance = isBlueAlliance;
+    }
+
+    @Override
+    public Iterator<Point> iterator() {
+        return points.iterator();
     }
     
     

@@ -57,9 +57,15 @@ public class FieldView extends JPanel{
                 g2.drawLine(last.getX(), last.getY(), p.getX(), p.getY());
             }            
         }
-        g.setColor(pointColor);
-        for(Point p : model.getPoints()) {
+        g.setColor(Color.GREEN);
+        for(int i = 0; i < model.getPoints().size(); i ++) {
+            Point p = model.getPoint(i);
+            
+            if(i == model.getPoints().size()-1)
+                g.setColor(Color.YELLOW);
+ 
             g.fillOval(p.getX() - 5, p.getY() - 5, 10, 10);
+            g.setColor(pointColor);
         }
     }
 }
