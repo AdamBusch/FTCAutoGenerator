@@ -74,15 +74,15 @@
                       <Component id="fieldView_jPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="customCode_jButton" min="-2" max="-2" attributes="0"/>
                           <Component id="notes_jLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="speed_jLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="speedSlider_jSlider" pref="0" max="32767" attributes="0"/>
-                          </Group>
-                          <Component id="currentPointName_jTextField" alignment="0" pref="183" max="32767" attributes="0"/>
+                          <Component id="currentPointName_jTextField" alignment="0" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" alignment="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="generateCode_jButton" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="speed_jLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="speedSlider_jSlider" min="-2" pref="140" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jScrollPane2" pref="139" max="32767" attributes="0"/>
@@ -98,14 +98,14 @@
                           <Component id="jScrollPane2" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="currentPointName_jTextField" min="-2" pref="37" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="speedSlider_jSlider" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="speed_jLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="speedSlider_jSlider" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="customCode_jButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                              <Component id="generateCode_jButton" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="notes_jLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jScrollPane1" min="-2" pref="163" max="-2" attributes="0"/>
@@ -137,12 +137,12 @@
                 <Property name="text" type="java.lang.String" value="Speed"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="customCode_jButton">
+            <Component class="javax.swing.JButton" name="generateCode_jButton">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Custom Code"/>
+                <Property name="text" type="java.lang.String" value="Generate Code"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="customCode_jButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generateCode_jButtonActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="notes_jLabel">

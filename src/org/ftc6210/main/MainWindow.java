@@ -72,7 +72,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         currentPointName_jTextField = new javax.swing.JTextField();
         speedSlider_jSlider = new javax.swing.JSlider();
         speed_jLabel = new javax.swing.JLabel();
-        customCode_jButton = new javax.swing.JButton();
+        generateCode_jButton = new javax.swing.JButton();
         notes_jLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         notes_jTextArea = new javax.swing.JTextArea();
@@ -98,10 +98,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
 
         speed_jLabel.setText("Speed");
 
-        customCode_jButton.setText("Custom Code");
-        customCode_jButton.addActionListener(new java.awt.event.ActionListener() {
+        generateCode_jButton.setText("Generate Code");
+        generateCode_jButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                customCode_jButtonActionPerformed(evt);
+                generateCode_jButtonActionPerformed(evt);
             }
         });
 
@@ -151,14 +151,14 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                 .addComponent(fieldView_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(customCode_jButton)
                     .addComponent(notes_jLabel)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addComponent(currentPointName_jTextField)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(generateCode_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(speed_jLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(speedSlider_jSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(currentPointName_jTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(speedSlider_jSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                 .addContainerGap())
@@ -171,13 +171,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                     .addComponent(jScrollPane2)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(currentPointName_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(speedSlider_jSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(speed_jLabel))
-                        .addGap(18, 18, 18)
-                        .addComponent(customCode_jButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(49, 49, 49)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(speed_jLabel)
+                            .addComponent(speedSlider_jSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(24, 24, 24)
+                        .addComponent(generateCode_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(notes_jLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -281,9 +281,11 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void customCode_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customCode_jButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_customCode_jButtonActionPerformed
+    private void generateCode_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCode_jButtonActionPerformed
+        CodeGenerator gen = new CodeGenerator(redPoints,  new RobotHardware(6, new String[]{"motor1", "motor2"}));
+        blueAlliance_jTextArea.setText(gen.getRedAllianceCode());
+        redAlliance_jTextArea.setText(gen.getBlueAllianceCode());
+    }//GEN-LAST:event_generateCode_jButtonActionPerformed
 
     private void copyRed_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyRed_jButtonActionPerformed
         // TODO add your handling code here:
@@ -375,8 +377,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JButton copyBlue_jButton;
     private javax.swing.JButton copyRed_jButton;
     private javax.swing.JTextField currentPointName_jTextField;
-    private javax.swing.JButton customCode_jButton;
     private javax.swing.JPanel fieldView_jPanel;
+    private javax.swing.JButton generateCode_jButton;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
