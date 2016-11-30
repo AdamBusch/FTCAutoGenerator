@@ -52,6 +52,7 @@ public class FieldView extends JPanel{
             Point p = model.getPoints().get(i);
             if(i > 0) {
                 Point last = model.getPoint(i - 1);
+                
                 Graphics2D g2 = (Graphics2D) g;
                 g2.setStroke(new BasicStroke(2));
                 g2.drawLine(last.getX(), last.getY(), p.getX(), p.getY());
@@ -61,10 +62,15 @@ public class FieldView extends JPanel{
         for(int i = 0; i < model.getPoints().size(); i ++) {
             Point p = model.getPoint(i);
             
+            
+            
             if(i == model.getPoints().size()-1)
                 g.setColor(Color.YELLOW);
  
-            g.fillOval(p.getX() - 5, p.getY() - 5, 10, 10);
+            if(p.equals(windowRef.getSelectedPoint()))
+                g.fillOval(p.getX() - 7, p.getY() - 7, 14, 14);
+            else
+                g.fillOval(p.getX() - 5, p.getY() - 5, 10, 10);
             g.setColor(pointColor);
         }
     }

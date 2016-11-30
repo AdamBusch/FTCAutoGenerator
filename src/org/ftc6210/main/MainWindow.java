@@ -36,7 +36,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     private PointModel redPoints;
     private PointModel bluePoints;
     private BufferedImage fieldImage;
-    private Point selectedPoint;
+    private Point selectedPoint, draggedPoint;
     
     public MainWindow() throws IOException {
         initComponents();
@@ -49,6 +49,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         //  Update 30 times a second
         Timer timer = new Timer(1000/60, this);
         timer.start();
+        
+        speedSlider_jSlider.setMinimum(0);
+        speedSlider_jSlider.setMaximum(100);
+        speedSlider_jSlider.setMajorTickSpacing(1);
+        
+        setSelectedPoint(null);
+        
     }
 
     /**
@@ -60,7 +67,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenu1 = new javax.swing.JMenu();
         mainTabs_jTabbedPane = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         currentPointName_jTextField = new javax.swing.JTextField();
@@ -84,8 +90,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
-
-        jMenu1.setText("jMenu1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -286,16 +290,18 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     }//GEN-LAST:event_copyRed_jButtonActionPerformed
 
     private void fieldView_jPanelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fieldView_jPanelMouseReleased
-        selectedPoint = null;
+        java.awt.Point mouse = fieldView_jPanel.getMousePosition();
+        if(evt.getButton() == java.awt.event.MouseEvent.BUTTON1)
+            draggedPoint = null;
+        
         if(evt.getButton() == java.awt.event.MouseEvent.BUTTON3)
-            redPoints.addPoint(evt.getX(), evt.getY(), "Point");
+            setSelectedPoint(redPoints.addPoint(evt.getX(), evt.getY(), "Point" + (redPoints.getPoints().size() + 1)));
+            
         
     }//GEN-LAST:event_fieldView_jPanelMouseReleased
 
     private void fieldView_jPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fieldView_jPanelMouseClicked
-        java.awt.Point mouse = fieldView_jPanel.getMousePosition();
-        
-        
+
     }//GEN-LAST:event_fieldView_jPanelMouseClicked
 
     private void fieldView_jPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fieldView_jPanelMousePressed
@@ -303,16 +309,25 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         
         if(mouse == null)return;
         
-        selectedPoint = null;
-        if(evt.getButton() == java.awt.event.MouseEvent.BUTTON1)
+        
+        Point toSelect = null;
+        if(evt.getButton() == java.awt.event.MouseEvent.BUTTON1) // LEFT CLICK TO DRAG
             for(Point p : redPoints) {
                 Rectangle hitbox = new Rectangle(p.getX()-5, p.getY() -5, 10, 10);
-                if(hitbox.contains(mouse) && selectedPoint == null) {
-                    selectedPoint = p;
-                    return;
+                if(hitbox.contains(mouse)) {
+                    toSelect = p;
+                    break;
                 }
             }
-
+        
+        if(draggedPoint == null)
+            draggedPoint = toSelect;
+        if(toSelect != null)
+            setSelectedPoint(toSelect);
+        
+        if(evt.getButton() == java.awt.event.MouseEvent.BUTTON2) {
+            
+        }
         
     }//GEN-LAST:event_fieldView_jPanelMousePressed
 
@@ -362,7 +377,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JTextField currentPointName_jTextField;
     private javax.swing.JButton customCode_jButton;
     private javax.swing.JPanel fieldView_jPanel;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
@@ -405,16 +419,31 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         java.awt.Point mouse = fieldView_jPanel.getMousePosition();
         
         if(mouse != null) {
-            if(selectedPoint != null) {
-                selectedPoint.setX(mouse.x);
-                selectedPoint.setY(mouse.y);
-                
-                System.out.println(selectedPoint.getX() + " " + selectedPoint.getY());
+            if(draggedPoint != null) {
+                draggedPoint.setX(mouse.x);
+                draggedPoint.setY(mouse.y);
             }
         }
                  
     }
     
+    public void setSelectedPoint(Point p) {
+        selectedPoint = p;
+        if(selectedPoint == null){
+            currentPointName_jTextField.setEnabled(false);
+            notes_jTextArea.setEnabled(false);
+            speedSlider_jSlider.setEnabled(false);
+            return;
+        }
+        currentPointName_jTextField.setEnabled(true);
+        notes_jTextArea.setEnabled(true);
+        speedSlider_jSlider.setEnabled(true);
+        
+        currentPointName_jTextField.setText(p.getName());
+        notes_jTextArea.setText(p.getNotes());
+        speedSlider_jSlider.setValue(p.getSpeed());
+        
+    }
 
     public PointModel getRedPoints() {
         return redPoints;
@@ -426,6 +455,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
 
     public BufferedImage getFieldImage() {
         return fieldImage;
+    }
+
+    public Point getSelectedPoint() {
+        return selectedPoint;
     }
     
     
