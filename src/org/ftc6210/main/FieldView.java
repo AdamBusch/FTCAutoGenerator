@@ -41,7 +41,6 @@ public class FieldView extends JPanel{
         offGraphics.clearRect(0,0,360,360);
         offGraphics.drawImage(windowRef.getFieldImage(), 0, 0, 360, 360, this);
         drawPoints(offGraphics, windowRef.getRedPoints(), Color.RED);
-        drawPoints(offGraphics, windowRef.getBluePoints(), Color.BLUE);
         
         g.drawImage(offscreen, 0,0,360,360, null);
     }

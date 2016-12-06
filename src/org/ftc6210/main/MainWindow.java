@@ -7,9 +7,11 @@ package org.ftc6210.main;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Label;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
@@ -21,7 +23,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.Timer;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -33,17 +38,20 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
      * Creates new form MainWindow
      */
     
-    private PointModel redPoints;
-    private PointModel bluePoints;
+    private PointModel points;
     private BufferedImage fieldImage;
     private Point selectedPoint, draggedPoint;
+    private DefaultListModel<Point> pointListModel;
     
     public MainWindow() throws IOException {
         initComponents();
         
-        redPoints = new PointModel(false);
-        bluePoints = new PointModel(true);
-       
+        points = new PointModel(false);
+        pointListModel = new DefaultListModel<>();
+        points_jList.setModel(pointListModel);
+        
+        
+        
         fieldImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/field.png"));
         
         //  Update 30 times a second
@@ -94,7 +102,11 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         currentPointName_jTextField.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
-        currentPointName_jTextField.setText("Point");
+        currentPointName_jTextField.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                currentPointName_jTextFieldPropertyChange(evt);
+            }
+        });
 
         speed_jLabel.setText("Speed");
 
@@ -115,6 +127,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
+        });
+        points_jList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        points_jList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                points_jListValueChanged(evt);
+            }
         });
         jScrollPane2.setViewportView(points_jList);
 
@@ -150,17 +168,18 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                 .addContainerGap()
                 .addComponent(fieldView_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(notes_jLabel)
-                    .addComponent(currentPointName_jTextField)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(generateCode_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(speed_jLabel)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(notes_jLabel)
+                        .addComponent(currentPointName_jTextField)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(generateCode_jButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(speed_jLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(speedSlider_jSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                        .addGap(42, 42, 42)
+                        .addComponent(speedSlider_jSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -282,7 +301,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     }// </editor-fold>//GEN-END:initComponents
 
     private void generateCode_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCode_jButtonActionPerformed
-        CodeGenerator gen = new CodeGenerator(redPoints,  new RobotHardware(6, new String[]{"motor1", "motor2"}));
+        CodeGenerator gen = new CodeGenerator(points,  new RobotHardware(6, new String[]{"motor1", "motor2"}));
         blueAlliance_jTextArea.setText(gen.getRedAllianceCode());
         redAlliance_jTextArea.setText(gen.getBlueAllianceCode());
     }//GEN-LAST:event_generateCode_jButtonActionPerformed
@@ -297,11 +316,18 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
             draggedPoint = null;
         
         if(evt.getButton() == java.awt.event.MouseEvent.BUTTON3)
-            setSelectedPoint(redPoints.addPoint(evt.getX(), evt.getY(), "Point" + (redPoints.getPoints().size() + 1)));
-            
-        
+            setSelectedPoint(addPoint(evt.getX(), evt.getY()));
     }//GEN-LAST:event_fieldView_jPanelMouseReleased
 
+    private Point addPoint(int x, int y) {
+        
+        Point p = new Point(x, y, "Point " + (points.getPoints().size() + 1), 50, "", false);
+        System.out.println(p.getName());
+        points.addPoint(p);
+        pointListModel.addElement(p);
+        return p;
+    }
+    
     private void fieldView_jPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fieldView_jPanelMouseClicked
 
     }//GEN-LAST:event_fieldView_jPanelMouseClicked
@@ -314,7 +340,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         
         Point toSelect = null;
         if(evt.getButton() == java.awt.event.MouseEvent.BUTTON1) // LEFT CLICK TO DRAG
-            for(Point p : redPoints) {
+            for(Point p : points) {
                 Rectangle hitbox = new Rectangle(p.getX()-5, p.getY() -5, 10, 10);
                 if(hitbox.contains(mouse)) {
                     toSelect = p;
@@ -332,6 +358,17 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         }
         
     }//GEN-LAST:event_fieldView_jPanelMousePressed
+
+    private void points_jListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_points_jListValueChanged
+        Point p = pointListModel.get(points_jList.getSelectedIndex());
+        selectPointFromList(p);
+        
+        System.out.println(p);
+    }//GEN-LAST:event_points_jListValueChanged
+
+    private void currentPointName_jTextFieldPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_currentPointName_jTextFieldPropertyChange
+        System.out.println(evt.getNewValue());
+    }//GEN-LAST:event_currentPointName_jTextFieldPropertyChange
 
     /**
      * @param args the command line arguments
@@ -402,8 +439,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     // Handle all of the animations from the image view
     @Override
     public void actionPerformed(ActionEvent e) {
-        
-        
         Graphics g = fieldView_jPanel.getGraphics();
         
         if(mainTabs_jTabbedPane.getSelectedIndex() != 0){
@@ -417,42 +452,63 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     }
     
     public void pointLogic() {
-        
         java.awt.Point mouse = fieldView_jPanel.getMousePosition();
-        
         if(mouse != null) {
             if(draggedPoint != null) {
                 draggedPoint.setX(mouse.x);
                 draggedPoint.setY(mouse.y);
             }
-        }
-                 
+        }       
     }
     
-    public void setSelectedPoint(Point p) {
-        selectedPoint = p;
-        if(selectedPoint == null){
+    private void selectPointFromList(Point p) {
+        
+        if(p == null){
             currentPointName_jTextField.setEnabled(false);
             notes_jTextArea.setEnabled(false);
             speedSlider_jSlider.setEnabled(false);
             return;
         }
+        
+        selectedPoint = p;
+        
         currentPointName_jTextField.setEnabled(true);
         notes_jTextArea.setEnabled(true);
         speedSlider_jSlider.setEnabled(true);
         
         currentPointName_jTextField.setText(p.getName());
         notes_jTextArea.setText(p.getNotes());
-        speedSlider_jSlider.setValue(p.getSpeed());
+        speedSlider_jSlider.setValue(p.getSpeed());  
+    }
+    
+    private void setSelectedPoint(Point p) {
         
+        if(p == null){
+            currentPointName_jTextField.setEnabled(false);
+            notes_jTextArea.setEnabled(false);
+            speedSlider_jSlider.setEnabled(false);
+            return;
+        }
+        if(selectedPoint != null) { // Save all data
+            selectedPoint.setName(currentPointName_jTextField.getText());
+            selectedPoint.setNotes(notes_jTextArea.getText());
+            selectedPoint.setSpeed(speedSlider_jSlider.getValue());
+        }
+        
+        selectedPoint = p;
+        points_jList.setSelectedIndex(pointListModel.indexOf(p));
+        
+        currentPointName_jTextField.setEnabled(true);
+        notes_jTextArea.setEnabled(true);
+        speedSlider_jSlider.setEnabled(true);
+        
+        currentPointName_jTextField.setText(p.getName());
+        notes_jTextArea.setText(p.getNotes());
+        speedSlider_jSlider.setValue(p.getSpeed());   
     }
 
     public PointModel getRedPoints() {
-        return redPoints;
-    }
-
-    public PointModel getBluePoints() {
-        return bluePoints;
+        return points;
     }
 
     public BufferedImage getFieldImage() {
