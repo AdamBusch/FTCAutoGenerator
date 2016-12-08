@@ -21,27 +21,17 @@ public class CodeGenerator {
         points = model.getPoints();
         robot = rh;
     }
-    
-    
-    
-    private void calibrate(Point p1, Point p2) {
-        
-    }
-    
-    
-    public String getBlueAllianceCode() {
-        return null;
-    }
-    public String getRedAllianceCode() {
+
+    public String getCode() {
         String output = "";
-        output += robot.initClass("Red Autonomous") + 
+        output += robot.initClass("RedAutonomous") + 
             robot.initMotors() +
-            "waitForStart();\n";
-        for(int i = 0; i < points.size() -1; i++){
-            output += robot.turn(points.get(i), points.get(i+1));
-            output += robot.drive(points.get(i), points.get(i+1), 0.5);
+            "        waitForStart();\n";
+        for(int i = 0; i < points.size() -2; i++){
+            output += robot.drive(points.get(i), points.get(i+1), points.get(i).getSpeed()/100);
+            output += robot.turn(points.get(i), points.get(i+1), points.get(i+2), points.get(i).getSpeed()/100);
         }
-        
+        output += robot.drive(points.get(points.size() - 2), points.get(points.size() - 1), points.get(points.size() - 2).getSpeed()/100);
         output += robot.endClass();
         return output;
         

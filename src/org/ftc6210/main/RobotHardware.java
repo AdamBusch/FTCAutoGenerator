@@ -1,41 +1,37 @@
 package org.ftc6210.main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
  * @author tae
  */
 public class RobotHardware {
-    private ArrayList<String> motors;
+    private String[] motors;
     private ArrayList<String> servos;
     private int wheelD;
     
     
     public RobotHardware(int wheelDiam, String[] driveMotors) {
-        motors = new ArrayList();
+        motors = driveMotors;
         servos = new ArrayList();
-        for (String m : driveMotors)
-            motors.add(m);
         wheelD = wheelDiam;
     }
      
-    public void addMotor(String m){
-        motors.add(m);
-    }
     
-    public String drive(Point p1, Point p2, double speed) {
+    public String drive(Point p1, Point p2, double speed) {        
         String output = "";
-        output += setDriveMode("DcMotor.RunMode.STOP_AND_RESET_ENCODER") + setDriveMode("DcMotor.RunMode.RUN_WITHOUT_ENCODER");
-        output += "while(getAverageEncoderPosition() < " + motors.get(0) + ".getCurrentPosition() + " + toInches(p1.getX(), p2.getX())
-                + ") {\n"
-                + setDriveSpeed(speed)
-                + "\n}";
+        output += "        encoderDrive(" + getDistance(p1, p2) + "," + speed + ", getDriveMotors());\n";
         return output;
     }
     
-    public String turn(Point p1, Point p2) {
-        return null;
+    public String turn(Point p1, Point p2, Point p3, double speed) {
+        double a = getDistance(p1,p2);
+        double b = getDistance(p2,p3);
+        double c = getDistance(p1,p3);
+        //middle angle = arccos((a^2 + b^2 - c^2) / 2ab)
+        return "        encoderTurn(" + (180 - (Math.acos((Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / (2 * a * b)) * (180/Math.PI))) + "," + speed + " ,getDriveMotors());\n";
     }
     
     
@@ -50,6 +46,10 @@ public class RobotHardware {
     
     private double toInches(double p1, double p2) { 
         return (p2 - p1) * 1.75;
+    }
+    
+    private double getDistance(Point p1, Point p2) {
+        return Math.sqrt(Math.pow(p2.getX() - p1.getX(), 2) + Math.pow(p2.getY() - p1.getY(), 2)) * 1.75;
     }
     
     public String setDriveMode(String mode) {
@@ -74,21 +74,78 @@ public class RobotHardware {
     }
     
     public String endClass() {
-        String output = "}\n\n";
-        output += "public int getAverageEncoderPosition() {\n"
-                + "int total = ";
-        for (String m : motors) {
-            output += m + ".getCurrentPosition() + ";
-        } 
-        output += " + 0;\n"
-                + " return total/" + motors.size() + ";\n}";
+        String output = "\n\n}\n\n";
+        output +=   "public void encoderDrive(double inches, double speed, DcMotor... motors) throws InterruptedException {\n" +
+                    "    int pulses = (int) ((inches / (6 * Math.PI) * 280) * 1.6);\n" +
+                    "    resetMotorEncoders();\n" +
+                    "    while(getAverageEncoderPosition(motors) <= pulses) {\n" +
+                    "        setDriveSpeed(speed, -speed);\n" +
+                    "        telemetry.addData(\\\"Target\\\", pulses);\n" +
+                    "        telemetry.addData(\\\"Current\\\", getAverageEncoderPosition(motors));\n" +
+                    "        telemetry.update();\n" +
+                    "        idle();\n" +
+                    "     }\n" +
+                    "     setDriveSpeed(0, 0);\n" +
+                    " }\n" +
+                    " \npublic void setDriveSpeed(double speedLeft, double speedRight) {\n" +
+                    "     setLeftDriveSpeed(speedLeft);\n" +
+                    "    setRightDriveSpeed(speedRight);\n" +
+                    "}\n" +
+                    "\npublic void setRightDriveSpeed(double speed) {\n" +
+                    "    setMotorSpeeds(speed, rightDriveBack, rightDriveFront);\n" +
+                    "}\n" +
+                    "\npublic void setLeftDriveSpeed(double speed) {\n" +
+                    "    setMotorSpeeds(speed, leftDriveBack, leftDriveFront);\n" +
+                    "}\n" +
+                    "\npublic void setMotorSpeeds(double speed, DcMotor... motors) {\n" +
+                    "    for (DcMotor motor : motors)\n" +
+                    "        motor.setPower(Range.clip(speed, -1, 1));\n" +
+                    "}\n" + 
+                    "public int getAverageEncoderPosition(DcMotor... motors) {\n" +
+                    "    int total = 0;\n" +
+                    "    int numMotors = motors.length;\n" +
+                    "    for(DcMotor motor : motors){\n" +
+                    "        if(motor.getCurrentPosition() == -1) {\n" +
+                    "            numMotors --;\n" +
+                    "        }\n" +
+                    "        else\n" +
+                    "            total += motor.getCurrentPosition();\n" +
+                    "        }\n" +
+                    "        return total/numMotors;\n" +
+                    "}\n" + 
+                    "\npublic DcMotor[] getDriveMotors(){\n" +
+                    "    return new DcMotor[]{" + Arrays.toString(motors).replace("[", "").replace("]", "") + "};\n" +
+                    "}\n\n" + 
+                    "public void encoderTurn(double deg, double speed, DcMotor... motors) throws InterruptedException {\n" +
+                    "    int pulses = (int) ((((deg/360) * (18 * Math.PI) / (6 * Math.PI) * 280) * 1.6) * 1.55);\n" +
+                    "    resetMotorEncoders();\n" +
+                    "    setMotorRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER, motors);\n" +
+                    "    while(getAverageEncoderPosition(motors) <= pulses) {\n" +
+                    "        setDriveSpeed(speed, speed);\n" +
+                    "        telemetry.addData(\"Target\", pulses);\n" +
+                    "        telemetry.addData(\"Current\", getAverageEncoderPosition(motors));\n" +
+                    "        telemetry.update();\n" +
+                    "        idle();\n" +
+                    "    }\n" +
+                    "\nsetDriveSpeed(0, 0);\n" +
+                    "\n" +
+                    "}" +
+                    "\n\npublic void resetMotorEncoders(){\n" +
+                    "    setMotorRunMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER, getDriveMotors());\n" +
+                    "}\n" +
+                    "\n" +
+                    "public void setMotorRunMode(DcMotor.RunMode runMode, DcMotor... motors){\n" +
+                    "     for(DcMotor motor : motors) {\n" +
+                    "        motor.setMode(runMode);\n" +
+                    "     }\n" +
+                    "}";
         return output;
     }
     
     public String initMotors() {
         String output = "";
         for (String m : motors)
-            output += "public DcMotor " + m + " = hardwareMap.dcMotor.get(\"" + m + "\")\n";
+            output += "        public DcMotor " + m + " = hardwareMap.dcMotor.get(\"" + m + "\")\n";
         return output;
     }
     

@@ -397,9 +397,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     }// </editor-fold>//GEN-END:initComponents
 
     private void generateCode_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCode_jButtonActionPerformed
+        blueAlliance_jTextArea.setText("");
+        redAlliance_jTextArea.setText("");
         CodeGenerator gen = new CodeGenerator(points,  new RobotHardware(6, new String[]{"motor1", "motor2"}));
-        blueAlliance_jTextArea.setText(gen.getRedAllianceCode());
-        redAlliance_jTextArea.setText(gen.getBlueAllianceCode());
+        if(points.getPoint(0).getX() < 175)
+            blueAlliance_jTextArea.setText(gen.getCode());
+        else
+            redAlliance_jTextArea.setText(gen.getCode());
     }//GEN-LAST:event_generateCode_jButtonActionPerformed
 
     private void copyRed_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyRed_jButtonActionPerformed
