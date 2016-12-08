@@ -40,12 +40,14 @@ public class FieldView extends JPanel{
         
         offGraphics.clearRect(0,0,360,360);
         offGraphics.drawImage(windowRef.getFieldImage(), 0, 0, 360, 360, this);
-        drawPoints(offGraphics, windowRef.getRedPoints(), Color.RED);
+        drawPoints(offGraphics, windowRef.getRedPoints());
         
         g.drawImage(offscreen, 0,0,360,360, null);
     }
     
-    public void drawPoints(Graphics g, PointModel model, Color pointColor) {
+    public void drawPoints(Graphics g, PointModel model) {
+        
+        if(model.getPoints().isEmpty()) return;
         g.setColor(Color.BLACK);
         for(int i = 0; i <  model.getPoints().size(); i ++){
             Point p = model.getPoints().get(i);
@@ -58,6 +60,8 @@ public class FieldView extends JPanel{
             }            
         }
         g.setColor(Color.GREEN);
+        
+        Color pointColor = model.getPoint(0).getX() < 175 ? Color.BLUE : Color.RED;
         for(int i = 0; i < model.getPoints().size(); i ++) {
             Point p = model.getPoint(i);
             
