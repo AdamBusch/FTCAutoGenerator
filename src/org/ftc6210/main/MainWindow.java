@@ -439,6 +439,11 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         percentError_jLabel.setText("Percent Error");
 
         percentError_jTextField.setText("1.00");
+        percentError_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                percentError_jTextFieldKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout configure_jPanelLayout = new javax.swing.GroupLayout(configure_jPanel);
         configure_jPanel.setLayout(configure_jPanelLayout);
@@ -453,10 +458,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                     .addComponent(percentError_jLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(wheelD_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(sensorEnabled_jCheckBox)
                     .addComponent(sensorName_jTextField)
-                    .addComponent(percentError_jTextField))
+                    .addComponent(percentError_jTextField)
+                    .addComponent(wheelD_jTextField))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(robotMotors_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -614,28 +619,38 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         clpbrd.setContents(stringSelection, null);
     }//GEN-LAST:event_copyBlue_jButtonActionPerformed
 
+    private void percentError_jTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_percentError_jTextFieldKeyTyped
+        try {
+            Double.parseDouble(evt.getKeyCode() + "");
+        } catch (Exception e) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_percentError_jTextFieldKeyTyped
+
     
     public void generateCode() {
         if(points == null || points.getPoints().size() <= 1) return;
         blueAlliance_jTextArea.setText("");
         redAlliance_jTextArea.setText("");
-        CodeGenerator gen = new CodeGenerator(points,  new RobotHardware(getWheelD(), getMotorNames().toArray(new String[0])));
+        CodeGenerator gen = new CodeGenerator(points,  new RobotHardware(getWheelD(), getMotorNames()[0]));
         if(points.getPoint(0).getX() < 175)
             blueAlliance_jTextArea.setText(gen.getCode());
         else
             redAlliance_jTextArea.setText(gen.getCode());
     }
     
-    public ArrayList<String> getMotorNames() {
-        JTextField[] motorNameFields = {leftMotor1_jTextField,leftMotor2_jTextField, leftMotor3_jTextField, leftMotor4_jTextField
-                ,rightMotor1_jTextField,rightMotor2_jTextField, rightMotor3_jTextField, rightMotor4_jTextField};
-        ArrayList<String> motorNames = new ArrayList<>();
-        for(JTextField field :motorNameFields) {
-            if(!field.getText().isEmpty())
-                motorNames.add(field.getText());
-        }
+    public String[][] getMotorNames() {
+        ArrayList<String> leftMotors = new ArrayList<>(), rightMotors = new ArrayList<>();
+        JTextField[] leftFields = {leftMotor1_jTextField, leftMotor2_jTextField, leftMotor3_jTextField, leftMotor4_jTextField};
+        JTextField[] rightFields = {rightMotor1_jTextField, rightMotor2_jTextField, rightMotor3_jTextField, rightMotor4_jTextField};
+        for(JTextField f : leftFields)
+            if(!f.getText().isEmpty())
+                leftMotors.add(f.getText());
+        for(JTextField f : rightFields)
+            if(!f.getText().isEmpty())
+                rightMotors.add(f.getText());
         
-        return motorNames;        
+        return new String[][]{leftMotors.toArray(new String[0]), rightMotors.toArray(new String[0])};       
     }
     
     public int getWheelD() {
