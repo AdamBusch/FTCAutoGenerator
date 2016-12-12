@@ -5,6 +5,7 @@
  */
 package org.ftc6210.main;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -12,7 +13,7 @@ import java.util.Iterator;
  *
  * @author Busch_902818
  */
-public class PointModel implements Iterable<Point>{
+public class PointModel implements Iterable<Point>, Serializable{
     
     private ArrayList<Point> points;
     private boolean isBlueAlliance;
