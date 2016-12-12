@@ -14,16 +14,24 @@ import java.awt.Image;
 import java.awt.Label;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.awt.TextField;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.input.KeyCode;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -74,6 +82,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         mainTabs_jTabbedPane = new javax.swing.JTabbedPane();
         workspace_jPanel = new javax.swing.JPanel();
@@ -82,35 +91,54 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         fieldView_jPanel = new FieldView(this);
         currentPointPanel_jPanel = new javax.swing.JPanel();
         generateCode_jButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        notes_jScrollPane = new javax.swing.JScrollPane();
         notes_jTextArea = new javax.swing.JTextArea();
         currentPointName_jTextField = new javax.swing.JTextField();
         notes_jLabel = new javax.swing.JLabel();
         speedSlider_jSlider = new javax.swing.JSlider();
         speed_jLabel = new javax.swing.JLabel();
         redAllianceCode_jPanel = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        redAlliance_jScrollPane = new javax.swing.JScrollPane();
         redAlliance_jTextArea = new javax.swing.JTextArea();
         copyRed_jButton = new javax.swing.JButton();
         blueAllianceCode_jPanel = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
+        blueAlliance_jScrollPane = new javax.swing.JScrollPane();
         blueAlliance_jTextArea = new javax.swing.JTextArea();
         copyBlue_jButton = new javax.swing.JButton();
         configure_jPanel = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jLabel3 = new javax.swing.JLabel();
+        robotMotors_jPanel = new javax.swing.JPanel();
+        robotDiagram_jLabel = new javax.swing.JLabel();
+        rightMotor_jLabel = new javax.swing.JLabel();
+        leftMotor_jLabel = new javax.swing.JLabel();
+        leftMotor1_jTextField = new javax.swing.JTextField();
+        leftMotor2_jTextField = new javax.swing.JTextField();
+        leftMotor3_jTextField = new javax.swing.JTextField();
+        leftMotor4_jTextField = new javax.swing.JTextField();
+        rightMotor1_jTextField = new javax.swing.JTextField();
+        rightMotor2_jTextField = new javax.swing.JTextField();
+        rightMotor3_jTextField = new javax.swing.JTextField();
+        rightMotor4_jTextField = new javax.swing.JTextField();
+        wheelD_jLabel = new javax.swing.JLabel();
+        wheelD_jTextField = new javax.swing.JTextField();
+        sensorEnabled_jLabel = new javax.swing.JLabel();
+        sensorEnabled_jCheckBox = new javax.swing.JCheckBox();
+        sensorName_jLabel = new javax.swing.JLabel();
+        sensorName_jTextField = new javax.swing.JTextField();
+        percentError_jLabel = new javax.swing.JLabel();
+        percentError_jTextField = new javax.swing.JTextField();
         jMenuBar = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        file_jMenu = new javax.swing.JMenu();
+        edit_jMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("FTC Autonomous Generator");
         setResizable(false);
+
+        mainTabs_jTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                mainTabs_jTabbedPaneStateChanged(evt);
+            }
+        });
 
         points_jList.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -158,7 +186,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
 
         notes_jTextArea.setColumns(20);
         notes_jTextArea.setRows(5);
-        jScrollPane1.setViewportView(notes_jTextArea);
+        notes_jScrollPane.setViewportView(notes_jTextArea);
 
         currentPointName_jTextField.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         currentPointName_jTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -176,19 +204,17 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         currentPointPanel_jPanelLayout.setHorizontalGroup(
             currentPointPanel_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(currentPointPanel_jPanelLayout.createSequentialGroup()
-                .addGroup(currentPointPanel_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(currentPointPanel_jPanelLayout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addGroup(currentPointPanel_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(speed_jLabel)
-                            .addComponent(notes_jLabel)
-                            .addComponent(currentPointName_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(currentPointPanel_jPanelLayout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(speedSlider_jSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(generateCode_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGroup(currentPointPanel_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(generateCode_jButton, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(currentPointPanel_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(speed_jLabel)
+                        .addComponent(notes_jLabel)
+                        .addComponent(currentPointName_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(currentPointPanel_jPanelLayout.createSequentialGroup()
+                            .addGap(42, 42, 42)
+                            .addComponent(speedSlider_jSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(notes_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(16, 16, 16))
         );
         currentPointPanel_jPanelLayout.setVerticalGroup(
             currentPointPanel_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +228,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                 .addGap(18, 18, 18)
                 .addComponent(notes_jLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(notes_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(generateCode_jButton)
                 .addContainerGap())
@@ -240,7 +266,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
 
         redAlliance_jTextArea.setColumns(20);
         redAlliance_jTextArea.setRows(5);
-        jScrollPane3.setViewportView(redAlliance_jTextArea);
+        redAlliance_jScrollPane.setViewportView(redAlliance_jTextArea);
 
         copyRed_jButton.setText("Copy Code");
         copyRed_jButton.addActionListener(new java.awt.event.ActionListener() {
@@ -256,7 +282,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
             .addGroup(redAllianceCode_jPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(redAllianceCode_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+                    .addComponent(redAlliance_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, redAllianceCode_jPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(copyRed_jButton)))
@@ -266,19 +292,24 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
             redAllianceCode_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(redAllianceCode_jPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(redAlliance_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(copyRed_jButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         mainTabs_jTabbedPane.addTab("Red Alliance", redAllianceCode_jPanel);
 
         blueAlliance_jTextArea.setColumns(20);
         blueAlliance_jTextArea.setRows(5);
-        jScrollPane4.setViewportView(blueAlliance_jTextArea);
+        blueAlliance_jScrollPane.setViewportView(blueAlliance_jTextArea);
 
         copyBlue_jButton.setText("Copy Code");
+        copyBlue_jButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                copyBlue_jButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout blueAllianceCode_jPanelLayout = new javax.swing.GroupLayout(blueAllianceCode_jPanel);
         blueAllianceCode_jPanel.setLayout(blueAllianceCode_jPanelLayout);
@@ -287,7 +318,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
             .addGroup(blueAllianceCode_jPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(blueAllianceCode_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+                    .addComponent(blueAlliance_jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, blueAllianceCode_jPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(copyBlue_jButton)))
@@ -297,88 +328,173 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
             blueAllianceCode_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(blueAllianceCode_jPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(blueAlliance_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
                 .addComponent(copyBlue_jButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mainTabs_jTabbedPane.addTab("Blue Alliance", blueAllianceCode_jPanel);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(1);
-        jScrollPane2.setViewportView(jTextArea1);
+        robotDiagram_jLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/robocfg.png"))); // NOI18N
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/robocfg.png"))); // NOI18N
+        rightMotor_jLabel.setText("Right Motor Names");
 
-        jLabel2.setText("Right Motor Names");
+        leftMotor_jLabel.setText("Left Motor Names");
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setLineWrap(true);
-        jTextArea2.setRows(1);
-        jScrollPane5.setViewportView(jTextArea2);
+        leftMotor1_jTextField.setText("leftDriveFront");
 
-        jLabel3.setText("Left Motor Names");
+        leftMotor2_jTextField.setText("leftDriveBack");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        rightMotor1_jTextField.setText("rightDriveFront");
+
+        rightMotor2_jTextField.setText("rightDriveBack");
+
+        javax.swing.GroupLayout robotMotors_jPanelLayout = new javax.swing.GroupLayout(robotMotors_jPanel);
+        robotMotors_jPanel.setLayout(robotMotors_jPanelLayout);
+        robotMotors_jPanelLayout.setHorizontalGroup(
+            robotMotors_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(robotMotors_jPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                .addGroup(robotMotors_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(leftMotor_jLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(leftMotor1_jTextField)
+                    .addComponent(leftMotor2_jTextField)
+                    .addComponent(leftMotor3_jTextField)
+                    .addComponent(leftMotor4_jTextField))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
+                .addComponent(robotDiagram_jLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                .addGroup(robotMotors_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(rightMotor_jLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rightMotor1_jTextField)
+                    .addComponent(rightMotor2_jTextField)
+                    .addComponent(rightMotor3_jTextField)
+                    .addComponent(rightMotor4_jTextField))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        robotMotors_jPanelLayout.setVerticalGroup(
+            robotMotors_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(robotMotors_jPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addGroup(robotMotors_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(robotMotors_jPanelLayout.createSequentialGroup()
+                        .addComponent(robotDiagram_jLabel)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, robotMotors_jPanelLayout.createSequentialGroup()
+                        .addGroup(robotMotors_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, robotMotors_jPanelLayout.createSequentialGroup()
+                                .addComponent(leftMotor_jLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(leftMotor1_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(leftMotor2_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(leftMotor3_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(leftMotor4_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, robotMotors_jPanelLayout.createSequentialGroup()
+                                .addComponent(rightMotor_jLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rightMotor1_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(rightMotor2_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(rightMotor3_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(rightMotor4_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(99, 99, 99))))
         );
+
+        wheelD_jLabel.setText("Wheel Diameter (in)");
+
+        wheelD_jTextField.setText("4");
+        wheelD_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                wheelD_jTextFieldKeyTyped(evt);
+            }
+        });
+
+        sensorEnabled_jLabel.setText("Gyro Sensor?");
+
+        sensorEnabled_jCheckBox.setSelected(false);
+        sensorEnabled_jCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
+
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, sensorName_jTextField, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), sensorEnabled_jCheckBox, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        bindingGroup.addBinding(binding);
+
+        sensorEnabled_jCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sensorEnabled_jCheckBoxActionPerformed(evt);
+            }
+        });
+
+        sensorName_jLabel.setText("Sensor Name");
+
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, sensorName_jTextField, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), sensorName_jLabel, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        bindingGroup.addBinding(binding);
+
+        sensorName_jTextField.setText("gyroSensor");
+
+        percentError_jLabel.setText("Percent Error");
+
+        percentError_jTextField.setText("1.00");
 
         javax.swing.GroupLayout configure_jPanelLayout = new javax.swing.GroupLayout(configure_jPanel);
         configure_jPanel.setLayout(configure_jPanelLayout);
         configure_jPanelLayout.setHorizontalGroup(
             configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, configure_jPanelLayout.createSequentialGroup()
-                .addContainerGap(242, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(wheelD_jLabel)
+                    .addComponent(sensorEnabled_jLabel)
+                    .addComponent(sensorName_jLabel)
+                    .addComponent(percentError_jLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(wheelD_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sensorEnabled_jCheckBox)
+                    .addComponent(sensorName_jTextField)
+                    .addComponent(percentError_jTextField))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(robotMotors_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         configure_jPanelLayout.setVerticalGroup(
             configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(configure_jPanelLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(configure_jPanelLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(robotMotors_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(configure_jPanelLayout.createSequentialGroup()
+                        .addGap(102, 102, 102)
+                        .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(wheelD_jLabel)
+                            .addComponent(wheelD_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(sensorEnabled_jCheckBox)
+                            .addComponent(sensorEnabled_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(16, 16, 16)
+                        .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(sensorName_jLabel)
+                            .addComponent(sensorName_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(percentError_jLabel)
+                            .addComponent(percentError_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
         mainTabs_jTabbedPane.addTab("Configure Robot", configure_jPanel);
 
-        jMenu2.setText("File");
-        jMenuBar.add(jMenu2);
+        file_jMenu.setText("File");
+        jMenuBar.add(file_jMenu);
 
-        jMenu3.setText("Edit");
-        jMenuBar.add(jMenu3);
+        edit_jMenu.setText("Edit");
+        jMenuBar.add(edit_jMenu);
 
         setJMenuBar(jMenuBar);
 
@@ -386,28 +502,32 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainTabs_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 728, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mainTabs_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 728, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainTabs_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(mainTabs_jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        bindingGroup.bind();
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void generateCode_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCode_jButtonActionPerformed
-        blueAlliance_jTextArea.setText("");
-        redAlliance_jTextArea.setText("");
-        CodeGenerator gen = new CodeGenerator(points,  new RobotHardware(6, new String[]{"motor1", "motor2"}));
-        if(points.getPoint(0).getX() < 175)
-            blueAlliance_jTextArea.setText(gen.getCode());
-        else
-            redAlliance_jTextArea.setText(gen.getCode());
+        generateCode();
     }//GEN-LAST:event_generateCode_jButtonActionPerformed
 
     private void copyRed_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyRed_jButtonActionPerformed
-        // TODO add your handling code here:
+        StringSelection stringSelection = new StringSelection(redAlliance_jTextArea.getText());
+        Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clpbrd.setContents(stringSelection, null);
     }//GEN-LAST:event_copyRed_jButtonActionPerformed
 
     private void fieldView_jPanelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fieldView_jPanelMouseReleased
@@ -472,6 +592,62 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         System.out.println("Enter!");
     }//GEN-LAST:event_currentPointName_jTextFieldActionPerformed
 
+    private void mainTabs_jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mainTabs_jTabbedPaneStateChanged
+        generateCode();
+    }//GEN-LAST:event_mainTabs_jTabbedPaneStateChanged
+
+    private void wheelD_jTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_wheelD_jTextFieldKeyTyped
+        try {
+            Integer.parseInt(evt.getKeyChar() + "");
+        } catch (Exception e) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_wheelD_jTextFieldKeyTyped
+
+    private void sensorEnabled_jCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sensorEnabled_jCheckBoxActionPerformed
+
+    }//GEN-LAST:event_sensorEnabled_jCheckBoxActionPerformed
+
+    private void copyBlue_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyBlue_jButtonActionPerformed
+        StringSelection stringSelection = new StringSelection(blueAlliance_jTextArea.getText());
+        Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clpbrd.setContents(stringSelection, null);
+    }//GEN-LAST:event_copyBlue_jButtonActionPerformed
+
+    
+    public void generateCode() {
+        if(points == null || points.getPoints().size() <= 1) return;
+        blueAlliance_jTextArea.setText("");
+        redAlliance_jTextArea.setText("");
+        CodeGenerator gen = new CodeGenerator(points,  new RobotHardware(getWheelD(), getMotorNames().toArray(new String[0])));
+        if(points.getPoint(0).getX() < 175)
+            blueAlliance_jTextArea.setText(gen.getCode());
+        else
+            redAlliance_jTextArea.setText(gen.getCode());
+    }
+    
+    public ArrayList<String> getMotorNames() {
+        JTextField[] motorNameFields = {leftMotor1_jTextField,leftMotor2_jTextField, leftMotor3_jTextField, leftMotor4_jTextField
+                ,rightMotor1_jTextField,rightMotor2_jTextField, rightMotor3_jTextField, rightMotor4_jTextField};
+        ArrayList<String> motorNames = new ArrayList<>();
+        for(JTextField field :motorNameFields) {
+            if(!field.getText().isEmpty())
+                motorNames.add(field.getText());
+        }
+        
+        return motorNames;        
+    }
+    
+    public int getWheelD() {
+        int d;
+        try {
+            d = Integer.parseInt(wheelD_jTextField.getText());
+        } catch (NumberFormatException e) {
+            return 4;
+        }
+        return d;
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -513,38 +689,51 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel blueAllianceCode_jPanel;
+    private javax.swing.JScrollPane blueAlliance_jScrollPane;
     private javax.swing.JTextArea blueAlliance_jTextArea;
     private javax.swing.JPanel configure_jPanel;
     private javax.swing.JButton copyBlue_jButton;
     private javax.swing.JButton copyRed_jButton;
     private javax.swing.JTextField currentPointName_jTextField;
     private javax.swing.JPanel currentPointPanel_jPanel;
+    private javax.swing.JMenu edit_jMenu;
     private javax.swing.JPanel fieldView_jPanel;
+    private javax.swing.JMenu file_jMenu;
     private javax.swing.JButton generateCode_jButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextField leftMotor1_jTextField;
+    private javax.swing.JTextField leftMotor2_jTextField;
+    private javax.swing.JTextField leftMotor3_jTextField;
+    private javax.swing.JTextField leftMotor4_jTextField;
+    private javax.swing.JLabel leftMotor_jLabel;
     private javax.swing.JTabbedPane mainTabs_jTabbedPane;
     private javax.swing.JLabel notes_jLabel;
+    private javax.swing.JScrollPane notes_jScrollPane;
     private javax.swing.JTextArea notes_jTextArea;
+    private javax.swing.JLabel percentError_jLabel;
+    private javax.swing.JTextField percentError_jTextField;
     private javax.swing.JScrollPane pointList_jScrollPane;
     private javax.swing.JList points_jList;
     private javax.swing.JPanel redAllianceCode_jPanel;
+    private javax.swing.JScrollPane redAlliance_jScrollPane;
     private javax.swing.JTextArea redAlliance_jTextArea;
+    private javax.swing.JTextField rightMotor1_jTextField;
+    private javax.swing.JTextField rightMotor2_jTextField;
+    private javax.swing.JTextField rightMotor3_jTextField;
+    private javax.swing.JTextField rightMotor4_jTextField;
+    private javax.swing.JLabel rightMotor_jLabel;
+    private javax.swing.JLabel robotDiagram_jLabel;
+    private javax.swing.JPanel robotMotors_jPanel;
+    private javax.swing.JCheckBox sensorEnabled_jCheckBox;
+    private javax.swing.JLabel sensorEnabled_jLabel;
+    private javax.swing.JLabel sensorName_jLabel;
+    private javax.swing.JTextField sensorName_jTextField;
     private javax.swing.JSlider speedSlider_jSlider;
     private javax.swing.JLabel speed_jLabel;
+    private javax.swing.JLabel wheelD_jLabel;
+    private javax.swing.JTextField wheelD_jTextField;
     private javax.swing.JPanel workspace_jPanel;
+    private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
 
     
