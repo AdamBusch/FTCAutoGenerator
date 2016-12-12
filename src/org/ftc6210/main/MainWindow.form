@@ -398,21 +398,37 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="wheelD_jLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="sensorEnabled_jLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="sensorName_jLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="percentError_jLabel" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="wheelD_jLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="gyroEnabled_jLabel" min="-2" max="-2" attributes="0"/>
+                                  <Component id="gyroName_jLabel" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="gyroEnabled_jCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <Component id="gyroName_jTextField" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="wheelD_jTextField" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                              <Component id="drivePercentError_jLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                              <Component id="drivePercentError_jTextField" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="turnPercentError_jLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                              <Component id="turnPercentError_jTextField" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
+                              <Component id="percentError_jLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="sensorEnabled_jCheckBox" min="-2" max="-2" attributes="0"/>
-                          <Component id="sensorName_jTextField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="percentError_jTextField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="wheelD_jTextField" alignment="0" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="30" max="32767" attributes="0"/>
                       <Component id="robotMotors_jPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -427,29 +443,33 @@
                               <Component id="robotMotors_jPanel" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="102" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="90" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="wheelD_jLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="wheelD_jTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="sensorEnabled_jCheckBox" min="-2" max="-2" attributes="0"/>
-                                  <Component id="sensorEnabled_jLabel" min="-2" pref="16" max="-2" attributes="0"/>
+                                  <Component id="gyroEnabled_jCheckBox" min="-2" max="-2" attributes="0"/>
+                                  <Component id="gyroEnabled_jLabel" min="-2" pref="16" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="sensorName_jLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="sensorName_jTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="gyroName_jLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="gyroName_jTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="percentError_jLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="percentError_jLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="percentError_jTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="drivePercentError_jTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="drivePercentError_jLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="turnPercentError_jLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="turnPercentError_jTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="18" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -585,33 +605,33 @@
                 <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="wheelD_jTextFieldKeyTyped"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="sensorEnabled_jLabel">
+            <Component class="javax.swing.JLabel" name="gyroEnabled_jLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Gyro Sensor?"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="sensorEnabled_jCheckBox">
+            <Component class="javax.swing.JCheckBox" name="gyroEnabled_jCheckBox">
               <Properties>
                 <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                   <Insets value="[0, 0, 0, 0]"/>
                 </Property>
               </Properties>
               <BindingProperties>
-                <BindingProperty name="selected" source="sensorName_jTextField" sourcePath="${enabled}" target="sensorEnabled_jCheckBox" targetPath="selected" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="selected" source="gyroName_jTextField" sourcePath="${enabled}" target="gyroEnabled_jCheckBox" targetPath="selected" updateStrategy="0" immediately="false"/>
               </BindingProperties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sensorEnabled_jCheckBoxActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="gyroEnabled_jCheckBoxActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="sensorName_jLabel">
+            <Component class="javax.swing.JLabel" name="gyroName_jLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Sensor Name"/>
+                <Property name="text" type="java.lang.String" value="Gyro Name"/>
               </Properties>
               <BindingProperties>
-                <BindingProperty name="enabled" source="sensorName_jTextField" sourcePath="${enabled}" target="sensorName_jLabel" targetPath="enabled" updateStrategy="0" immediately="false"/>
+                <BindingProperty name="enabled" source="gyroName_jTextField" sourcePath="${enabled}" target="gyroName_jLabel" targetPath="enabled" updateStrategy="0" immediately="false"/>
               </BindingProperties>
             </Component>
-            <Component class="javax.swing.JTextField" name="sensorName_jTextField">
+            <Component class="javax.swing.JTextField" name="gyroName_jTextField">
               <Properties>
                 <Property name="text" type="java.lang.String" value="gyroSensor"/>
               </Properties>
@@ -621,12 +641,30 @@
                 <Property name="text" type="java.lang.String" value="Percent Error"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="percentError_jTextField">
+            <Component class="javax.swing.JTextField" name="drivePercentError_jTextField">
               <Properties>
                 <Property name="text" type="java.lang.String" value="1.00"/>
               </Properties>
               <Events>
-                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="percentError_jTextFieldKeyTyped"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="drivePercentError_jTextFieldKeyTyped"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JLabel" name="drivePercentError_jLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Drive"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="turnPercentError_jLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Turn"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="turnPercentError_jTextField">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="1.00"/>
+              </Properties>
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="turnPercentError_jTextFieldKeyTyped"/>
               </Events>
             </Component>
           </SubComponents>

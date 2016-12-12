@@ -5,11 +5,13 @@
  */
 package org.ftc6210.main;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Busch_902818
  */
-public class Point {
+public class Point implements Serializable{
     private int speed;
     private String name;
     private String notes;

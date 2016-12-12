@@ -10,13 +10,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.io.Serializable;
 import javax.swing.JPanel;
 
 /**
  *
  * @author Busch_902818
  */
-public class FieldView extends JPanel{
+public class FieldView extends JPanel implements Serializable{
     
     private MainWindow windowRef;
     

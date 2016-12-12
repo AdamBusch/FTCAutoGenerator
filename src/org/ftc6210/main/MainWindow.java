@@ -25,6 +25,7 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +41,7 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author Busch_902818
  */
-public class MainWindow extends javax.swing.JFrame implements ActionListener{
+public class MainWindow extends javax.swing.JFrame implements ActionListener, Serializable{
 
     /**
      * Creates new form MainWindow
@@ -120,12 +121,15 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         rightMotor4_jTextField = new javax.swing.JTextField();
         wheelD_jLabel = new javax.swing.JLabel();
         wheelD_jTextField = new javax.swing.JTextField();
-        sensorEnabled_jLabel = new javax.swing.JLabel();
-        sensorEnabled_jCheckBox = new javax.swing.JCheckBox();
-        sensorName_jLabel = new javax.swing.JLabel();
-        sensorName_jTextField = new javax.swing.JTextField();
+        gyroEnabled_jLabel = new javax.swing.JLabel();
+        gyroEnabled_jCheckBox = new javax.swing.JCheckBox();
+        gyroName_jLabel = new javax.swing.JLabel();
+        gyroName_jTextField = new javax.swing.JTextField();
         percentError_jLabel = new javax.swing.JLabel();
-        percentError_jTextField = new javax.swing.JTextField();
+        drivePercentError_jTextField = new javax.swing.JTextField();
+        drivePercentError_jLabel = new javax.swing.JLabel();
+        turnPercentError_jLabel = new javax.swing.JLabel();
+        turnPercentError_jTextField = new javax.swing.JTextField();
         jMenuBar = new javax.swing.JMenuBar();
         file_jMenu = new javax.swing.JMenu();
         edit_jMenu = new javax.swing.JMenu();
@@ -257,7 +261,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                         .addComponent(pointList_jScrollPane)
                         .addGap(9, 9, 9))
                     .addGroup(workspace_jPanelLayout.createSequentialGroup()
-                        .addGap(0, 1, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(fieldView_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -295,7 +299,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                 .addComponent(redAlliance_jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(copyRed_jButton)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         mainTabs_jTabbedPane.addTab("Red Alliance", redAllianceCode_jPanel);
@@ -415,33 +419,43 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
             }
         });
 
-        sensorEnabled_jLabel.setText("Gyro Sensor?");
+        gyroEnabled_jLabel.setText("Gyro Sensor?");
 
-        sensorEnabled_jCheckBox.setSelected(false);
-        sensorEnabled_jCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        gyroEnabled_jCheckBox.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
-        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, sensorName_jTextField, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), sensorEnabled_jCheckBox, org.jdesktop.beansbinding.BeanProperty.create("selected"));
+        org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, gyroName_jTextField, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), gyroEnabled_jCheckBox, org.jdesktop.beansbinding.BeanProperty.create("selected"));
         bindingGroup.addBinding(binding);
 
-        sensorEnabled_jCheckBox.addActionListener(new java.awt.event.ActionListener() {
+        gyroEnabled_jCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sensorEnabled_jCheckBoxActionPerformed(evt);
+                gyroEnabled_jCheckBoxActionPerformed(evt);
             }
         });
 
-        sensorName_jLabel.setText("Sensor Name");
+        gyroName_jLabel.setText("Gyro Name");
 
-        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, sensorName_jTextField, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), sensorName_jLabel, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
+        binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, gyroName_jTextField, org.jdesktop.beansbinding.ELProperty.create("${enabled}"), gyroName_jLabel, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        sensorName_jTextField.setText("gyroSensor");
+        gyroName_jTextField.setText("gyroSensor");
 
         percentError_jLabel.setText("Percent Error");
 
-        percentError_jTextField.setText("1.00");
-        percentError_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+        drivePercentError_jTextField.setText("1.00");
+        drivePercentError_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                percentError_jTextFieldKeyTyped(evt);
+                drivePercentError_jTextFieldKeyTyped(evt);
+            }
+        });
+
+        drivePercentError_jLabel.setText("Drive");
+
+        turnPercentError_jLabel.setText("Turn");
+
+        turnPercentError_jTextField.setText("1.00");
+        turnPercentError_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                turnPercentError_jTextFieldKeyTyped(evt);
             }
         });
 
@@ -450,18 +464,30 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         configure_jPanelLayout.setHorizontalGroup(
             configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, configure_jPanelLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(wheelD_jLabel)
-                    .addComponent(sensorEnabled_jLabel)
-                    .addComponent(sensorName_jLabel)
-                    .addComponent(percentError_jLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(sensorEnabled_jCheckBox)
-                    .addComponent(sensorName_jTextField)
-                    .addComponent(percentError_jTextField)
-                    .addComponent(wheelD_jTextField))
+                .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(configure_jPanelLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(wheelD_jLabel)
+                            .addComponent(gyroEnabled_jLabel)
+                            .addComponent(gyroName_jLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(gyroEnabled_jCheckBox)
+                            .addComponent(gyroName_jTextField)
+                            .addComponent(wheelD_jTextField)))
+                    .addGroup(configure_jPanelLayout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(drivePercentError_jLabel)
+                        .addGap(3, 3, 3)
+                        .addComponent(drivePercentError_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(turnPercentError_jLabel)
+                        .addGap(3, 3, 3)
+                        .addComponent(turnPercentError_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(configure_jPanelLayout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addComponent(percentError_jLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(robotMotors_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -474,22 +500,26 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
                         .addGap(28, 28, 28)
                         .addComponent(robotMotors_jPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(configure_jPanelLayout.createSequentialGroup()
-                        .addGap(102, 102, 102)
+                        .addGap(90, 90, 90)
                         .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(wheelD_jLabel)
                             .addComponent(wheelD_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(sensorEnabled_jCheckBox)
-                            .addComponent(sensorEnabled_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(gyroEnabled_jCheckBox)
+                            .addComponent(gyroEnabled_jLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(16, 16, 16)
                         .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(sensorName_jLabel)
-                            .addComponent(sensorName_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(gyroName_jLabel)
+                            .addComponent(gyroName_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
+                        .addComponent(percentError_jLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(configure_jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(percentError_jLabel)
-                            .addComponent(percentError_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(drivePercentError_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(drivePercentError_jLabel)
+                            .addComponent(turnPercentError_jLabel)
+                            .addComponent(turnPercentError_jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -609,9 +639,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         }
     }//GEN-LAST:event_wheelD_jTextFieldKeyTyped
 
-    private void sensorEnabled_jCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sensorEnabled_jCheckBoxActionPerformed
+    private void gyroEnabled_jCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gyroEnabled_jCheckBoxActionPerformed
 
-    }//GEN-LAST:event_sensorEnabled_jCheckBoxActionPerformed
+    }//GEN-LAST:event_gyroEnabled_jCheckBoxActionPerformed
 
     private void copyBlue_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyBlue_jButtonActionPerformed
         StringSelection stringSelection = new StringSelection(blueAlliance_jTextArea.getText());
@@ -619,13 +649,17 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         clpbrd.setContents(stringSelection, null);
     }//GEN-LAST:event_copyBlue_jButtonActionPerformed
 
-    private void percentError_jTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_percentError_jTextFieldKeyTyped
+    private void drivePercentError_jTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_drivePercentError_jTextFieldKeyTyped
         try {
             Double.parseDouble(evt.getKeyCode() + "");
         } catch (Exception e) {
             evt.consume();
         }
-    }//GEN-LAST:event_percentError_jTextFieldKeyTyped
+    }//GEN-LAST:event_drivePercentError_jTextFieldKeyTyped
+
+    private void turnPercentError_jTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_turnPercentError_jTextFieldKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_turnPercentError_jTextFieldKeyTyped
 
     
     public void generateCode() {
@@ -663,6 +697,28 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         }
         return d;
         
+    }
+    
+    public String getSensorName() {
+        if(!gyroName_jTextField.isEnabled()) 
+            return null;
+        return gyroName_jTextField.getText();
+    }
+    
+    public double getDrivePercentError() {
+        try{
+            return Double.parseDouble(drivePercentError_jTextField.getText());
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+    }
+    
+    public double getTurnPercentError() {
+        try {
+            return Double.parseDouble(turnPercentError_jTextField.getText());
+        } catch (Exception e) {
+            return 0;
+        }
     }
     /**
      * @param args the command line arguments
@@ -712,10 +768,16 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JButton copyRed_jButton;
     private javax.swing.JTextField currentPointName_jTextField;
     private javax.swing.JPanel currentPointPanel_jPanel;
+    private javax.swing.JLabel drivePercentError_jLabel;
+    private javax.swing.JTextField drivePercentError_jTextField;
     private javax.swing.JMenu edit_jMenu;
     private javax.swing.JPanel fieldView_jPanel;
     private javax.swing.JMenu file_jMenu;
     private javax.swing.JButton generateCode_jButton;
+    private javax.swing.JCheckBox gyroEnabled_jCheckBox;
+    private javax.swing.JLabel gyroEnabled_jLabel;
+    private javax.swing.JLabel gyroName_jLabel;
+    private javax.swing.JTextField gyroName_jTextField;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JTextField leftMotor1_jTextField;
     private javax.swing.JTextField leftMotor2_jTextField;
@@ -727,7 +789,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JScrollPane notes_jScrollPane;
     private javax.swing.JTextArea notes_jTextArea;
     private javax.swing.JLabel percentError_jLabel;
-    private javax.swing.JTextField percentError_jTextField;
     private javax.swing.JScrollPane pointList_jScrollPane;
     private javax.swing.JList points_jList;
     private javax.swing.JPanel redAllianceCode_jPanel;
@@ -740,12 +801,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JLabel rightMotor_jLabel;
     private javax.swing.JLabel robotDiagram_jLabel;
     private javax.swing.JPanel robotMotors_jPanel;
-    private javax.swing.JCheckBox sensorEnabled_jCheckBox;
-    private javax.swing.JLabel sensorEnabled_jLabel;
-    private javax.swing.JLabel sensorName_jLabel;
-    private javax.swing.JTextField sensorName_jTextField;
     private javax.swing.JSlider speedSlider_jSlider;
     private javax.swing.JLabel speed_jLabel;
+    private javax.swing.JLabel turnPercentError_jLabel;
+    private javax.swing.JTextField turnPercentError_jTextField;
     private javax.swing.JLabel wheelD_jLabel;
     private javax.swing.JTextField wheelD_jTextField;
     private javax.swing.JPanel workspace_jPanel;
