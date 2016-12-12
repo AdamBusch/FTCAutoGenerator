@@ -8,13 +8,15 @@ import java.util.Arrays;
  * @author tae
  */
 public class RobotHardware {
-    private String[] motors;
+    private String[] leftMotors;
+    private String[] rightMotors;
     private ArrayList<String> servos;
     private int wheelD;
     
     
-    public RobotHardware(int wheelDiam, String[] driveMotors) {
-        motors = driveMotors;
+    public RobotHardware(int wheelDiam, String[] left, String[] right) {
+        leftMotors = left;
+        rightMotors = right;
         servos = new ArrayList();
         wheelD = wheelDiam;
     }
@@ -37,7 +39,10 @@ public class RobotHardware {
     
     public String setDriveSpeed(double speed) {
         String output = "";
-        for (String m : motors) {
+        for (String m : leftMotors) {
+            output += m + ".setPower(Range.clip(" + speed + ", -1, 1);";
+        }
+        for (String m : rightMotors) {
             output += m + ".setPower(Range.clip(" + speed + ", -1, 1);";
         }
         return output;
@@ -54,7 +59,9 @@ public class RobotHardware {
     
     public String setDriveMode(String mode) {
         String output = "";
-        for (String m : motors)
+        for (String m : leftMotors)
+            output += m + ".setMode(" + mode + ");\n";
+        for (String m : rightMotors)
             output += m + ".setMode(" + mode + ");\n";
         return output;
     }
@@ -89,13 +96,13 @@ public class RobotHardware {
                     " }\n" +
                     " \npublic void setDriveSpeed(double speedLeft, double speedRight) {\n" +
                     "     setLeftDriveSpeed(speedLeft);\n" +
-                    "    setRightDriveSpeed(speedRight);\n" +
+                    "     setRightDriveSpeed(speedRight);\n" +
                     "}\n" +
                     "\npublic void setRightDriveSpeed(double speed) {\n" +
-                    "    setMotorSpeeds(speed, rightDriveBack, rightDriveFront);\n" +
+                    "    setMotorSpeeds(speed, " + Arrays.toString(rightMotors).replace("[", "").replace("]", "") + ");\n" +
                     "}\n" +
                     "\npublic void setLeftDriveSpeed(double speed) {\n" +
-                    "    setMotorSpeeds(speed, leftDriveBack, leftDriveFront);\n" +
+                    "    setMotorSpeeds(speed, " + Arrays.toString(leftMotors).replace("[", "").replace("]", "") + ");\n" +
                     "}\n" +
                     "\npublic void setMotorSpeeds(double speed, DcMotor... motors) {\n" +
                     "    for (DcMotor motor : motors)\n" +
@@ -114,7 +121,7 @@ public class RobotHardware {
                     "        return total/numMotors;\n" +
                     "}\n" + 
                     "\npublic DcMotor[] getDriveMotors(){\n" +
-                    "    return new DcMotor[]{" + Arrays.toString(motors).replace("[", "").replace("]", "") + "};\n" +
+                    "    return new DcMotor[]{" + Arrays.toString(leftMotors).replace("[", "").replace("]", "") + Arrays.toString(rightMotors).replace("[", "").replace("]", "") + "};\n" +
                     "}\n\n" + 
                     "public void encoderTurn(double deg, double speed, DcMotor... motors) throws InterruptedException {\n" +
                     "    int pulses = (int) ((((deg/360) * (18 * Math.PI) / (6 * Math.PI) * 280) * 1.6) * 1.55);\n" +
@@ -144,7 +151,9 @@ public class RobotHardware {
     
     public String initMotors() {
         String output = "";
-        for (String m : motors)
+        for (String m : leftMotors)
+            output += "        public DcMotor " + m + " = hardwareMap.dcMotor.get(\"" + m + "\")\n";
+        for (String m : rightMotors)
             output += "        public DcMotor " + m + " = hardwareMap.dcMotor.get(\"" + m + "\")\n";
         return output;
     }

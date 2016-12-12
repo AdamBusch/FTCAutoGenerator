@@ -632,12 +632,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener{
         if(points == null || points.getPoints().size() <= 1) return;
         blueAlliance_jTextArea.setText("");
         redAlliance_jTextArea.setText("");
-        CodeGenerator gen = new CodeGenerator(points,  new RobotHardware(getWheelD(), getMotorNames()[0]));
+        CodeGenerator gen = new CodeGenerator(points,  new RobotHardware(getWheelD(), getMotorNames()[0], getMotorNames()[1]));
         if(points.getPoint(0).getX() < 175)
             blueAlliance_jTextArea.setText(gen.getCode());
         else
             redAlliance_jTextArea.setText(gen.getCode());
     }
+    
     
     public String[][] getMotorNames() {
         ArrayList<String> leftMotors = new ArrayList<>(), rightMotors = new ArrayList<>();
