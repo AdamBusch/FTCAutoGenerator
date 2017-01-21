@@ -28,10 +28,10 @@ public class CodeGenerator {
             robot.initMotors() +
             "        waitForStart();\n";
         for(int i = 0; i < points.size() -2; i++){
-            output += robot.drive(points.get(i), points.get(i+1), points.get(i).getSpeed()/100);
-            output += robot.turn(points.get(i), points.get(i+1), points.get(i+2), points.get(i).getSpeed()/100);
+            output += robot.drive(points.get(i), points.get(i+1), points.get(i).getSpeed()/100.0);
+            output += robot.turn(points.get(i), points.get(i+1), points.get(i+2), points.get(i).getSpeed()/100.0);
         }
-        output += robot.drive(points.get(points.size() - 2), points.get(points.size() - 1), points.get(points.size() - 2).getSpeed()/100);
+        output += robot.drive(points.get(points.size() - 2), points.get(points.size() - 1), points.get(points.size() - 2).getSpeed()/100.0);
         output += robot.endClass();
         return output;
         

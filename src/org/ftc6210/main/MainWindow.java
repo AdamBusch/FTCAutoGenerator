@@ -64,7 +64,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
         fieldImage = ImageIO.read(getClass().getClassLoader().getResourceAsStream("res/field.png"));
         
         //  Update 30 times a second
-        Timer timer = new Timer(1000/60, this);
+        Timer timer = new Timer(1000/30, this);
         timer.start();
         
         speedSlider_jSlider.setMinimum(0);
@@ -132,7 +132,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
         turnPercentError_jTextField = new javax.swing.JTextField();
         jMenuBar = new javax.swing.JMenuBar();
         file_jMenu = new javax.swing.JMenu();
-        edit_jMenu = new javax.swing.JMenu();
+        save_jMenuItem = new javax.swing.JMenuItem();
+        saveAs_jMenuItem = new javax.swing.JMenuItem();
+        open_jSeparator = new javax.swing.JPopupMenu.Separator();
+        open_jMenuItem = new javax.swing.JMenuItem();
+        new_jMenuItem = new javax.swing.JMenuItem();
+        close_jSeparator = new javax.swing.JPopupMenu.Separator();
+        close_jMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("FTC Autonomous Generator");
@@ -181,7 +187,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
             .addGap(0, 360, Short.MAX_VALUE)
         );
 
-        generateCode_jButton.setText("Generate Code");
+        generateCode_jButton.setText("Delete");
         generateCode_jButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 generateCode_jButtonActionPerformed(evt);
@@ -440,8 +446,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
         gyroName_jTextField.setText("gyroSensor");
 
         percentError_jLabel.setText("Percent Error");
+        percentError_jLabel.setToolTipText("Calculate by THEORETICAL / ACTUAL");
 
         drivePercentError_jTextField.setText("1.00");
+        drivePercentError_jTextField.setToolTipText("Inches Wanted / Inches Driven");
         drivePercentError_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 drivePercentError_jTextFieldKeyTyped(evt);
@@ -449,10 +457,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
         });
 
         drivePercentError_jLabel.setText("Drive");
+        drivePercentError_jLabel.setToolTipText("Inches Wanted / Inches Driven");
 
         turnPercentError_jLabel.setText("Turn");
+        turnPercentError_jLabel.setToolTipText("Deg. Wanted / Deg. Turned");
 
         turnPercentError_jTextField.setText("1.00");
+        turnPercentError_jTextField.setToolTipText("Deg. Wanted / Deg. Turned");
         turnPercentError_jTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 turnPercentError_jTextFieldKeyTyped(evt);
@@ -526,10 +537,55 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
         mainTabs_jTabbedPane.addTab("Configure Robot", configure_jPanel);
 
         file_jMenu.setText("File");
-        jMenuBar.add(file_jMenu);
+        file_jMenu.setFocusPainted(true);
+        file_jMenu.setName("File"); // NOI18N
 
-        edit_jMenu.setText("Edit");
-        jMenuBar.add(edit_jMenu);
+        save_jMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        save_jMenuItem.setText("Save");
+        save_jMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                save_jMenuItemActionPerformed(evt);
+            }
+        });
+        file_jMenu.add(save_jMenuItem);
+
+        saveAs_jMenuItem.setText("Save As...");
+        saveAs_jMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAs_jMenuItemActionPerformed(evt);
+            }
+        });
+        file_jMenu.add(saveAs_jMenuItem);
+        file_jMenu.add(open_jSeparator);
+
+        open_jMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        open_jMenuItem.setText("Open");
+        open_jMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                open_jMenuItemActionPerformed(evt);
+            }
+        });
+        file_jMenu.add(open_jMenuItem);
+
+        new_jMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        new_jMenuItem.setText("New");
+        new_jMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new_jMenuItemActionPerformed(evt);
+            }
+        });
+        file_jMenu.add(new_jMenuItem);
+        file_jMenu.add(close_jSeparator);
+
+        close_jMenuItem.setText("Close");
+        close_jMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                close_jMenuItemActionPerformed(evt);
+            }
+        });
+        file_jMenu.add(close_jMenuItem);
+
+        jMenuBar.add(file_jMenu);
 
         setJMenuBar(jMenuBar);
 
@@ -556,7 +612,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     }// </editor-fold>//GEN-END:initComponents
 
     private void generateCode_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCode_jButtonActionPerformed
-        generateCode();
+        points.removePoint(selectedPoint);
+        pointListModel.remove(pointListModel.indexOf(selectedPoint));
     }//GEN-LAST:event_generateCode_jButtonActionPerformed
 
     private void copyRed_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyRed_jButtonActionPerformed
@@ -577,7 +634,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     private Point addPoint(int x, int y) {
         
         Point p = new Point(x, y, "Point " + (points.getPoints().size() + 1), 50, "", false);
-        System.out.println(p.getName());
         points.addPoint(p);
         pointListModel.addElement(p);
         return p;
@@ -624,7 +680,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     private void currentPointName_jTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_currentPointName_jTextFieldActionPerformed
         selectedPoint.setName(currentPointName_jTextField.getText());
         pointListModel.set(pointListModel.indexOf(selectedPoint), selectedPoint);
-        System.out.println("Enter!");
     }//GEN-LAST:event_currentPointName_jTextFieldActionPerformed
 
     private void mainTabs_jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_mainTabs_jTabbedPaneStateChanged
@@ -658,8 +713,32 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     }//GEN-LAST:event_drivePercentError_jTextFieldKeyTyped
 
     private void turnPercentError_jTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_turnPercentError_jTextFieldKeyTyped
-        // TODO add your handling code here:
+        try {
+            Double.parseDouble(evt.getKeyCode() + "");
+        } catch (Exception e) {
+            evt.consume();
+        }
     }//GEN-LAST:event_turnPercentError_jTextFieldKeyTyped
+
+    private void save_jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_jMenuItemActionPerformed
+        
+    }//GEN-LAST:event_save_jMenuItemActionPerformed
+
+    private void saveAs_jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAs_jMenuItemActionPerformed
+        
+    }//GEN-LAST:event_saveAs_jMenuItemActionPerformed
+
+    private void open_jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_open_jMenuItemActionPerformed
+        
+    }//GEN-LAST:event_open_jMenuItemActionPerformed
+
+    private void new_jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_new_jMenuItemActionPerformed
+        
+    }//GEN-LAST:event_new_jMenuItemActionPerformed
+
+    private void close_jMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_close_jMenuItemActionPerformed
+        
+    }//GEN-LAST:event_close_jMenuItemActionPerformed
 
     
     public void generateCode() {
@@ -717,7 +796,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
         try {
             return Double.parseDouble(turnPercentError_jTextField.getText());
         } catch (Exception e) {
-            return 0;
+            return 1;
         }
     }
     /**
@@ -763,6 +842,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     private javax.swing.JPanel blueAllianceCode_jPanel;
     private javax.swing.JScrollPane blueAlliance_jScrollPane;
     private javax.swing.JTextArea blueAlliance_jTextArea;
+    private javax.swing.JMenuItem close_jMenuItem;
+    private javax.swing.JPopupMenu.Separator close_jSeparator;
     private javax.swing.JPanel configure_jPanel;
     private javax.swing.JButton copyBlue_jButton;
     private javax.swing.JButton copyRed_jButton;
@@ -770,8 +851,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     private javax.swing.JPanel currentPointPanel_jPanel;
     private javax.swing.JLabel drivePercentError_jLabel;
     private javax.swing.JTextField drivePercentError_jTextField;
-    private javax.swing.JMenu edit_jMenu;
-    private javax.swing.JPanel fieldView_jPanel;
+    protected javax.swing.JPanel fieldView_jPanel;
     private javax.swing.JMenu file_jMenu;
     private javax.swing.JButton generateCode_jButton;
     private javax.swing.JCheckBox gyroEnabled_jCheckBox;
@@ -785,9 +865,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     private javax.swing.JTextField leftMotor4_jTextField;
     private javax.swing.JLabel leftMotor_jLabel;
     private javax.swing.JTabbedPane mainTabs_jTabbedPane;
+    private javax.swing.JMenuItem new_jMenuItem;
     private javax.swing.JLabel notes_jLabel;
     private javax.swing.JScrollPane notes_jScrollPane;
     private javax.swing.JTextArea notes_jTextArea;
+    private javax.swing.JMenuItem open_jMenuItem;
+    private javax.swing.JPopupMenu.Separator open_jSeparator;
     private javax.swing.JLabel percentError_jLabel;
     private javax.swing.JScrollPane pointList_jScrollPane;
     private javax.swing.JList points_jList;
@@ -801,6 +884,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     private javax.swing.JLabel rightMotor_jLabel;
     private javax.swing.JLabel robotDiagram_jLabel;
     private javax.swing.JPanel robotMotors_jPanel;
+    private javax.swing.JMenuItem saveAs_jMenuItem;
+    private javax.swing.JMenuItem save_jMenuItem;
     private javax.swing.JSlider speedSlider_jSlider;
     private javax.swing.JLabel speed_jLabel;
     private javax.swing.JLabel turnPercentError_jLabel;
@@ -851,7 +936,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
             speedSlider_jSlider.setEnabled(false);
             return;
         }
-        System.out.println("Selected: " + p.getName());
         if(selectedPoint != null) { // Save all data
             selectedPoint.setName(currentPointName_jTextField.getText());
             selectedPoint.setNotes(notes_jTextArea.getText());

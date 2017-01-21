@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.Serializable;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
@@ -43,7 +44,7 @@ public class FieldView extends JPanel implements Serializable{
         offGraphics.drawImage(windowRef.getFieldImage(), 0, 0, 360, 360, this);
         drawPoints(offGraphics, windowRef.getRedPoints());
         
-        g.drawImage(offscreen, 0,0,360,360, null);
+        g.drawImage(offscreen, 0,0,360,360, windowRef.fieldView_jPanel);
     }
     
     public void drawPoints(Graphics g, PointModel model) {

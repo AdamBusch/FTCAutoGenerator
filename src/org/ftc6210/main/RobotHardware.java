@@ -24,7 +24,7 @@ public class RobotHardware {
     
     public String drive(Point p1, Point p2, double speed) {        
         String output = "";
-        output += "        encoderDrive(" + getDistance(p1, p2) + "," + speed + ", getDriveMotors());\n";
+        output += "        encoderDrive(" + String.format("%.2f", getDistance(p1, p2)) + "," + speed + ", getDriveMotors());\n";
         return output;
     }
     
@@ -33,7 +33,7 @@ public class RobotHardware {
         double b = getDistance(p2,p3);
         double c = getDistance(p1,p3);
         //middle angle = arccos((a^2 + b^2 - c^2) / 2ab)
-        return "        encoderTurn(" + (180 - (Math.acos((Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / (2 * a * b)) * (180/Math.PI))) + "," + speed + " ,getDriveMotors());\n";
+        return "        encoderTurn(" + String.format("%.2f",(180 - (Math.acos((Math.pow(a, 2) + Math.pow(b, 2) - Math.pow(c, 2)) / (2 * a * b)) * (180/Math.PI)))) + "," + speed + " ,getDriveMotors());\n";
     }
     
     
@@ -87,8 +87,8 @@ public class RobotHardware {
                     "    resetMotorEncoders();\n" +
                     "    while(getAverageEncoderPosition(motors) <= pulses) {\n" +
                     "        setDriveSpeed(speed, -speed);\n" +
-                    "        telemetry.addData(\\\"Target\\\", pulses);\n" +
-                    "        telemetry.addData(\\\"Current\\\", getAverageEncoderPosition(motors));\n" +
+                    "        telemetry.addData(\"Target\", pulses);\n" +
+                    "        telemetry.addData(\"Current\", getAverageEncoderPosition(motors));\n" +
                     "        telemetry.update();\n" +
                     "        idle();\n" +
                     "     }\n" +
