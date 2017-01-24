@@ -612,8 +612,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     }// </editor-fold>//GEN-END:initComponents
 
     private void generateCode_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generateCode_jButtonActionPerformed
+        
         points.removePoint(selectedPoint);
-        pointListModel.remove(pointListModel.indexOf(selectedPoint));
+        pointListModel.clear();
+        for(int i = 0; i < points.getPoints().size(); i++) {
+            pointListModel.add(i , points.getPoint(i));
+        }
     }//GEN-LAST:event_generateCode_jButtonActionPerformed
 
     private void copyRed_jButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_copyRed_jButtonActionPerformed
@@ -671,7 +675,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener, Se
     }//GEN-LAST:event_fieldView_jPanelMousePressed
 
     private void points_jListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_points_jListValueChanged
-        Point p = pointListModel.get(points_jList.getSelectedIndex());
+        int i = points_jList.getSelectedIndex();
+        if( i < 0 )return;
+        Point p = pointListModel.get(i);
         if(p != selectedPoint)
             setSelectedPoint(p);
         
